@@ -77,13 +77,20 @@ export interface GeminiResponse {
 }
 export async function generateSummary(transcription: string, apiKey: string): Promise<{ summary: string }> {
   const prompt = `
-    You are an expert at summarizing audio transcriptions. 
-    Please provide a concise, well-structured summary of the following transcription. 
-    Focus on the main points, key insights, and important details.
+You are an expert at summarizing audio transcriptions.
 
-    Transcription:
-    ${transcription}
-  `;
+Please analyze the following transcription and return a summary in **bullet points**, using clear and concise language.
+
+Format your response in two sections:
+
+1. **Summary Points** – key points of the conversation or content in bullet points.
+2. **Key Intakes** – the most important actionable items, conclusions, or takeaways.
+
+Make sure both sections are easy to read and well-structured.
+
+Transcription:
+${transcription}
+`;
 
   const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
     method: "POST",
