@@ -3,19 +3,18 @@
  */
 
 const API_BASE_URL = "https://api.assemblyai.com/v2";
-
-export async function uploadAudio(audioFile: File, apiKey: string): Promise<string> {
-  const formData = new FormData();
-  formData.append("file", audioFile);
-
-  const response = await fetch(`${API_BASE_URL}/upload`, {
+export async function startTranscription(audioUrl: string, apiKey: string): Promise<string> {
+  const response = await fetch(`${API_BASE_URL}/transcript`, {
     method: "POST",
     headers: {
       "Authorization": apiKey,
+      "Content-Type": "application/json",
     },
-    body: formData,
+    body: JSON.stringify({
+      audio_url: audioUrl,
+      language_code: "en",
+    }),
   });
-
   if (!response.ok) {
     const error = await response.json();
     throw new Error(`Upload failed: ${error.error || "Unknown error"}`);
